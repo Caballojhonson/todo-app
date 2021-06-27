@@ -1,16 +1,12 @@
-import { dateTime } from './modules/dateTime';
-import { createProject } from './modules/projects';
-import { createTask } from './modules/tasks';
+import { tasks, projects } from './modules/objects';
 import { storage } from './modules/storage';
 
-const testTask2 = createTask('testTitle2', 'testDesc2', '10/3/2007', 2);
-const testTask = createTask('testTitle', 'testDesc', '10/3/2006', 1);
+const testTask2 = tasks.createTask('testTitle2', 'testDesc2', '10/3/2007', 2);
+const testTask = tasks.createTask('testTitle', 'testDesc', '10/3/2006', 1);
 
-createProject('testProject', 'testProject Description', {
-	testTask,
-	testTask2,
-});
 
-createProject('Project2', 'This is a description', { testTask, testTask2 });
+projects.createProject('Project2', 'This is a description');
 
-console.log(storage.projects[1]);
+//storage.projects[0].pendingTasks.push(testTask2, testTask);
+
+console.log(storage.projects[0].completed ? 'YEAAH' : 'FUCK YOU!');
