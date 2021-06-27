@@ -1,78 +1,49 @@
 import { dateTime } from './dateTime';
 import { storage } from './storage';
 
-const projects = (() => {
+
 	const createProject = (name, description) => {
 		const type = 'project';
-		const completed = false;
-		const pendingTasks = [];
-		const completedTasks = [];
+		const complete = false;
+		const tasks = [];
 		const createdOn = dateTime.current;
 
-		storeProject({
+		storage.save({
 			name,
 			description,
-			pendingTasks,
-			completedTasks,
+			tasks,
 			createdOn,
-			completed,
-			type,
+			complete,
+			type
 		});
 	};
 
-	const storeProject = (project) => {
-		storage.localStore('project', project);
-		storage.pushProjectsFromStorage();
-	};
-
-	return { createProject };
-})();
-
-const tasks = (() => {
 	const createTask = (name, description, dueDate, priority) => {
 		const type = 'task';
 		const createdOn = dateTime.current;
-		const completed = false;
+		const complete = false;
 
-		saveTask({
+		storage.save({
 			name,
 			description,
 			dueDate,
 			priority,
 			createdOn,
-			completed,
-			type,
+			complete,
+			type
 		});
 	};
-
-	const saveTask = (task) => {
-		storage.localStore('task', task);
-		storage.pushTasksFromStorage();
-	};
-
-	return { createTask };
-})();
-
-const notes = (() => {
 
 	const createNote = (name, content) => {
 		const type = 'note';
 		const createdOn = dateTime.current;
 
-		saveNote({
+		storage.save({
 			name,
 			content,
 			createdOn,
-			type,
+			type
 		});
 	};
 
-	const saveNote = (task) => {
-		storage.localStore('task', task);
-		storage.pushTasksFromStorage();
-	};
-
-	return { createNote };
-})();
-
-export { tasks, projects, notes };
+export { createProject, createTask, createNote };

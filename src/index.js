@@ -1,12 +1,22 @@
-import { tasks, projects } from './modules/objects';
+import { createProject, createTask, createNote } from './modules/objects';
 import { storage } from './modules/storage';
 
-const testTask2 = tasks.createTask('testTitle2', 'testDesc2', '10/3/2007', 2);
-const testTask = tasks.createTask('testTitle', 'testDesc', '10/3/2006', 1);
+createTask('testTitle2', 'testDesc2', '10/3/2007', 2);
+createTask('testTitle', 'testDesc', '10/3/2006', 1);
+
+const testTask2 = storage.tasks[0];
+const testTask = storage.tasks[1];
 
 
-projects.createProject('Project2', 'This is a description');
+createProject('Project2', 'This is a description');
+storage.projects[0].tasks.push(testTask, testTask2)
 
-//storage.projects[0].pendingTasks.push(testTask2, testTask);
+//createNote('Note to self', 'Dont fart in public');
 
-console.log(storage.projects[0].completed ? 'YEAAH' : 'FUCK YOU!');
+
+console.log(storage.projects[0]);
+console.log(storage.projects[0].tasks)
+console.log(storage.notes.length === 0 ? 'yes' : 'no');
+console.log(storage.notes)
+
+storage.loadArrays();
