@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What todo</title>
-</head>
-<body>
-    <script src="main.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>What todo</title>
+	</head>
+	<body>
+		<nav>
+			<div id="clockContainer">
+				<h6 id="clock"></h6>
+				<h6 id="date"></h6>
+			</div>
+
+			<img id="statsIcon" class="navBtn" />
+			<img id="calendarIcon" class="navBtn" />
+			<img id="projectsIcon" class="navBtn" />
+			<img id="notesIcon" class="navBtn" />
+		</nav>
+
+        <div class="views overview" id="overview">
+            <h1 class="overview" id="overviewTitle">Overview</h1>
+            <h4 class="overview" id="upcomingTitle">Upcoming deadlines</h4>
+            <div class="overview boxes" id="upcomingCont"></div>
+            <h4 class="overview" id="pendingTitle">Pending tasks</h4>
+            <div class="overview boxes" id="pendingCont"></div>
+            <h4 class="overview" id="notesTitle">Notes</h4>
+            <div class="overview boxes" id="notesCont"></div>
+
+        </div>
+
+		<script src="main.js"></script>
+	</body>
 </html>

@@ -1,13 +1,8 @@
-import { storage } from "./storage";
-
-
+import { dateTime } from './dateTime';
+import { storage } from './storage';
 
 const logic = (() => {
 
-
-
-    return {  }
-
 })();
 
-export {logic}
+export { logic };

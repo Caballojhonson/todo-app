@@ -1,6 +1,10 @@
 import { dateTime } from './modules/dateTime';
+import { DOM } from './modules/DOM';
+import { logic } from './modules/logic';
 import { createProject, createTask, createNote } from './modules/objects';
 import { storage } from './modules/storage';
+import './style.css';
+
 
 
 function makeDummys() {
@@ -29,11 +33,16 @@ function debug() {
 // console.log('LocalStorage:');
 // console.log(window.localStorage);
 
-console.log(dateTime.thisMonth);
+//console.log(dateTime.thisMonth);
+
 
 }
 
 setTimeout(() => makeDummys(), 0);
 setTimeout(() => debug(), 50)
 
+
+DOM.nav.renderNav()
+DOM.nav.setClock()
+DOM.nav.setDate()
 
