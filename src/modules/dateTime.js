@@ -1,14 +1,20 @@
-import { format, getTime } from 'date-fns'
+import { add, format, getDaysInMonth, getMonth, getTime } from 'date-fns';
 
 const dateTime = (() => {
+	const now = () => new Date();
 
-	const current =  {
-        day: format(new Date(), 'P'),
-        time: format(new Date(), 'p'),
-        timestamp: getTime(new Date())
-    } 
+	const current = {
+		day: format(now(), 'P'),
+		time: format(now(), 'p'),
+		timestamp: getTime(now()),
+	};
 
-	return { current };
+	const thisMonth = {
+		month: format(now(), 'LLLL'),
+		totalDays: getDaysInMonth(now()),
+	};
+
+	return { current, thisMonth };
 })();
 
 export { dateTime };

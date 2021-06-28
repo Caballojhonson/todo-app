@@ -1,3 +1,4 @@
+import { dateTime } from './modules/dateTime';
 import { createProject, createTask, createNote } from './modules/objects';
 import { storage } from './modules/storage';
 
@@ -17,16 +18,22 @@ storage.projects[0].tasks.push(testTask, testTask2)
 createNote('Note to self', 'Dont fart in public');
 }
 
+function debug() {
 
+// console.log('All projects:');
+// console.log(storage.projects);
+// console.log('All tasks:');
+// console.log(storage.tasks)
+// console.log('All notes:');
+// console.log(storage.notes);
+// console.log('LocalStorage:');
+// console.log(window.localStorage);
 
-console.log('All projects:');
-console.log(storage.projects);
-console.log('All tasks:');
-console.log(storage.tasks)
-console.log('All notes:');
-console.log(storage.notes);
-console.log('LocalStorage:');
-console.log(window.localStorage);
+console.log(dateTime.thisMonth);
 
-setTimeout(() => makeDummys(), 0)
+}
+
+setTimeout(() => makeDummys(), 0);
+setTimeout(() => debug(), 50)
+
 

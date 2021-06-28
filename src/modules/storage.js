@@ -34,7 +34,6 @@ const storage = (() => {
 		return parsed;
 	};
 	
-
 	return {
 		projects,
 		tasks,
