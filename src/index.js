@@ -7,8 +7,9 @@ import { storage } from './modules/storage';
 import './style.css';
 
 function makeDummys() {
-	createTask('testTitle2', 'testDesc2', '07/03/2021', 2);
-	createTask('testTitle', 'testDesc', '06/30/2021', 1);
+	createTask('Poop in the barrel', 'Take ass. Take barrel to basement. Make poop in the barrel. Show mom.', '06/30/2021', 5)
+	createTask('Make love to goat', 'As usual', '07/03/2021', 2);
+	createTask('Caress nipples in the dark wearing the tutu', 'testDesc', '06/30/2021', 1);
 	createTask(
 		'Throw shit to window',
 		'Just poop on your hand, throw against the nearest window',
@@ -43,7 +44,7 @@ function makeDummys() {
 setTimeout(() => dateTime.getTimeToUpcomingDeadlines(), 5000) 
 
 function debug() {
-
+console.log(logic.sortByDeadline());
 }
 
 setTimeout(() => makeDummys(), 0);

@@ -7,6 +7,7 @@ import addIcon from '../icons/add.png';
 import { dateTime } from './dateTime';
 import { logic } from './logic';
 import { formatDistanceStrict } from 'date-fns';
+import { storage } from './storage';
 
 function newImage(source) {
 	const image = new Image();
@@ -37,14 +38,14 @@ function createText(tag, clss, text, appendTo) {
 	elem.classList.add(clss);
 	elem.textContent = text;
 	appendTo.appendChild(elem);
-    return elem
+	return elem;
 }
 
 function createDiv(clss, appendTo) {
-    let elem = document.createElement('div')
-    elem.classList.add(clss)
-    appendTo.appendChild(elem);
-    return elem
+	let elem = document.createElement('div');
+	elem.classList.add(clss);
+	appendTo.appendChild(elem);
+	return elem;
 }
 
 function append(what, where) {
@@ -77,16 +78,22 @@ const DOM = (() => {
 
 	const overview = (() => {
 		const renderUpcoming = () => {
-            let container = get('upcomingCont')
-			let box = createDiv('boxes', container)
+			let container = get('upcomingCont');
 			for (let i = 0; i < logic.getUpcomingTasks().length; i++) {
-				createText(
+				let box = createDiv('boxes', container);
+				let priorityBox = createDiv('priorityCircles', box);
+                priorityBox.textContent = logic.getUpcomingTasks()[i].priority;
+				createText('h4', 'fromProject', logic.getUpcomingTasks()[i].fromProject, box);
+                createText('h5', 'taskTitle', logic.getUpcomingTasks()[i].name, box);
+                createText(
 					'h6',
 					'timeTill',
-					dateTime.getTimeToUpcomingDeadlines()[i],
+					logic.dueOrOverdue(logic.getUpcomingTasks()[i].deadline, dateTime.getTimeToUpcomingDeadlines()[i]),
 					box
 				);
+                logic.changePriorityColor(logic.getUpcomingTasks()[i], priorityBox);
 			}
+            
 		};
 		return { renderUpcoming };
 	})();

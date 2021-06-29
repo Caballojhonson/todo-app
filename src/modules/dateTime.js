@@ -28,6 +28,7 @@ const dateTime = (() => {
 		return times;
 	}
 
+
 	return { current, thisMonth, getTime, getTimeToUpcomingDeadlines };
 })();
 
