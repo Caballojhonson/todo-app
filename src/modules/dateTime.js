@@ -1,6 +1,10 @@
-import { add, format, getDaysInMonth, getMonth, getTime } from 'date-fns';
+import { format, getDaysInMonth } from 'date-fns';
+import { formatDistanceStrict } from 'date-fns/esm';
+import { logic } from './logic';
 
 const dateTime = (() => {
+
+
 	const now = () => new Date();
 
 	const getTime = () => format(now(), 'p');
@@ -16,7 +20,15 @@ const dateTime = (() => {
 		totalDays: getDaysInMonth(now()),
 	};
 
-	return { current, thisMonth, getTime };
+	const getTimeToUpcomingDeadlines = () => {
+		let times = [];
+		for (let i = 0; i < logic.getUpcomingTasks().length; i++) {
+			times.push(formatDistanceStrict(now(), new Date(logic.getUpcomingTasks()[i].deadline)));
+		}
+		return times;
+	}
+
+	return { current, thisMonth, getTime, getTimeToUpcomingDeadlines };
 })();
 
 export { dateTime };

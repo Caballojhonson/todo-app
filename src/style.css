@@ -59,6 +59,11 @@
     .views {
         flex-direction: column;
     }
+    .boxContainers {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+    }
     .boxes {
         flex-wrap: wrap;
         width: 80%;

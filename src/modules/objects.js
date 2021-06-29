@@ -1,3 +1,4 @@
+import { closestIndexTo, compareDesc } from 'date-fns';
 import { dateTime } from './dateTime';
 import { storage } from './storage';
 
@@ -18,19 +19,21 @@ import { storage } from './storage';
 		});
 	};
 
-	const createTask = (name, description, dueDate, priority) => {
+	const createTask = (name, description, deadline, priority) => {
 		const type = 'task';
 		const createdOn = dateTime.current;
 		const complete = false;
+		const fromProject = 'Dummy Project';
 
 		storage.save({
 			name,
 			description,
-			dueDate,
+			deadline,
 			priority,
 			createdOn,
 			complete,
-			type
+			type,
+			fromProject
 		});
 	};
 
@@ -46,4 +49,11 @@ import { storage } from './storage';
 		});
 	};
 
-export { createProject, createTask, createNote };
+	const info = (() => {
+
+
+		
+		return {  }
+	})();
+
+export { createProject, createTask, createNote, info };
