@@ -37,12 +37,11 @@ import { storage } from './storage';
 		});
 	};
 
-	const createNote = (name, content) => {
+	const createNote = (content) => {
 		const type = 'note';
 		const createdOn = dateTime.current;
 
 		storage.save({
-			name,
 			content,
 			createdOn,
 			type

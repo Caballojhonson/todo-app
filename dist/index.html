@@ -19,16 +19,33 @@
 			<img id="notesIcon" class="navBtn" />
 		</nav>
 
-        <div class="views overview" id="overview">
-            <h1 class="overview" id="overviewTitle">Overview</h1>
-            <h4 class="overview" id="upcomingTitle">Upcoming deadlines:</h4>
-            <div class="overview boxContainers" id="upcomingCont"></div>
-            <h4 class="overview" id="pendingTitle">Pending tasks:</h4>
-            <div class="overview boxContainers" id="pendingCont"></div>
-            <h4 class="overview" id="notesTitle">Notes:</h4>
-            <div class="overview boxContainers" id="notesCont"></div>
+		<div class="views overview" id="overview">
+			<h1 class="overview" id="overviewTitle">Overview</h1>
+			<h4 class="overview" id="upcomingTitle">Upcoming deadlines:</h4>
+			<div class="overview boxContainers" id="upcomingContainer"></div>
+			<div class="overviews" id="statsContainer">
+				<div class="statsContainer" id="pendingContainer">
+					<h4 class="overview" id="pendingTitle">Pending</h4>
+				</div>
+				<div class="statsContainer" id="completeContainer">
+					<h4 class="overview" id="completeTitle">Completed</h4>
+				</div>
+			</div>
+			<h4 class="overview" id="notesTitle">Notes</h4>
+			<div class="overview boxContainers" id="notesContainer"></div>
+		</div>
 
-        </div>
+		<div class="views calendar" id="calendarView">
+			<h1>Calendar</h1>
+		</div>
+
+		<div class="views projects" id="projectsView">
+			<h1>Projects</h1>
+		</div>
+
+		<div class="views notes" id="notesView">
+			<h1>Notes</h1>
+		</div>
 
 		<script src="main.js"></script>
 	</body>

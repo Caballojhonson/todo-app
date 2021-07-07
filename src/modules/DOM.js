@@ -9,28 +9,11 @@ import { logic } from './logic';
 import { formatDistanceStrict } from 'date-fns';
 import { storage } from './storage';
 
-function newImage(source) {
-	const image = new Image();
-	image.src = source;
-	image.id = source.toString();
-
-	return image;
-}
-
 function getAll(selector) {
 	return document.querySelectorAll(selector);
 }
 function get(id) {
 	return document.getElementById(id);
-}
-
-function getIdsFromClass(clss) {
-	const elements = get(clss);
-	const ids = [];
-	for (let i = 0; i < elements.length; i++) {
-		ids.push(elements[i].id);
-	}
-	return ids;
 }
 
 function createText(tag, clss, text, appendTo) {
@@ -47,11 +30,6 @@ function createDiv(clss, appendTo) {
 	appendTo.appendChild(elem);
 	return elem;
 }
-
-function append(what, where) {
-	where.appendChild(what);
-}
-const common = (() => {})();
 
 const DOM = (() => {
 	const nav = (() => {
@@ -78,24 +56,114 @@ const DOM = (() => {
 
 	const overview = (() => {
 		const renderUpcoming = () => {
-			let container = get('upcomingCont');
+			let container = get('upcomingContainer');
 			for (let i = 0; i < logic.getUpcomingTasks().length; i++) {
 				let box = createDiv('boxes', container);
+
 				let priorityBox = createDiv('priorityCircles', box);
-                priorityBox.textContent = logic.getUpcomingTasks()[i].priority;
-				createText('h4', 'fromProject', logic.getUpcomingTasks()[i].fromProject, box);
-                createText('h5', 'taskTitle', logic.getUpcomingTasks()[i].name, box);
-                createText(
+				priorityBox.textContent = logic.getUpcomingTasks()[i].priority;
+				logic.changePriorityColor(logic.getUpcomingTasks()[i], priorityBox);
+
+				let textContainer = createDiv('upcomingTextContainer', box);
+
+				createText(
 					'h6',
 					'timeTill',
-					logic.dueOrOverdue(logic.getUpcomingTasks()[i].deadline, dateTime.getTimeToUpcomingDeadlines()[i]),
+					logic.dueOrOverdue(
+						logic.getUpcomingTasks()[i].deadline,
+						dateTime.getTimeToUpcomingDeadlines()[i]
+					),
 					box
 				);
-                logic.changePriorityColor(logic.getUpcomingTasks()[i], priorityBox);
+				createText(
+					'h4',
+					'fromProject',
+					logic.getUpcomingTasks()[i].fromProject,
+					textContainer
+				);
+				createText(
+					'h5',
+					'taskTitle',
+					logic.getUpcomingTasks()[i].name,
+					textContainer
+				);
 			}
-            
 		};
-		return { renderUpcoming };
+
+		const renderPending = () => {
+			const pendingContainer = get('pendingContainer');
+			const completeContainer = get('completeContainer');
+
+			createText(
+				'h5',
+				'pendingTasks',
+				`${logic.countStats().pendingTaskCount} Tasks`,
+				pendingContainer
+			);
+			createText(
+				'h5',
+				'pendingprojects',
+				`${logic.countStats().pendingProjectCount} Projects`,
+				pendingContainer
+			);
+
+			createText(
+				'h5',
+				'pendingTasks',
+				`${logic.countStats().completedTaskCount} Tasks`,
+				completeContainer
+			);
+			createText(
+				'h5',
+				'pendingTasks',
+				`${logic.countStats().completedProjectCount} Projects`,
+				completeContainer
+			);
+		};
+		return { renderUpcoming, renderPending };
+	})();
+
+	const calendar = (() => {
+		
+	})();
+
+	const navigation = (() => {
+		const statsBtn = get('statsIcon');
+		const calendarBtn = get('calendarIcon');
+		const projectsBtn = get('projectsIcon');
+		const notesBtn = get('notesIcon');
+
+		const statsView = get('overview');
+		const calendarView = get('calendarView');
+		const projectsView = get('projectsView');
+		const notesView = get('notesView');
+
+		function hideAllViews() {
+			statsView.style.display = 'none';
+			calendarView.style.display = 'none';
+			projectsView.style.display = 'none';
+			notesView.style.display = 'none';
+		}
+
+		statsBtn.addEventListener('click', () => {
+			hideAllViews();
+			statsView.style.display = 'flex';
+		});
+
+		calendarBtn.addEventListener('click', () => {
+			hideAllViews();
+			calendarView.style.display = 'flex';
+		});
+
+		projectsBtn.addEventListener('click', () => {
+			hideAllViews();
+			projectsView.style.display = 'flex';
+		});
+
+		notesBtn.addEventListener('click', () => {
+			hideAllViews();
+			notesView.style.display = 'flex';
+		});
 	})();
 
 	return { nav, overview };
