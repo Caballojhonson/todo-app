@@ -46,8 +46,7 @@ setTimeout(() => dateTime.getTimeToUpcomingDeadlines(), 5000)
 
 function debug() {
 console.log(logic.sortByDeadline());
-console.log( typeof logic.countStats().completedProjectCount);
-//console.log(storage.projects[0].complete)
+console.log(new Date('September 2021'));
 }
 
 setTimeout(() => makeDummys(), 0);
@@ -58,3 +57,4 @@ DOM.nav.setClock();
 DOM.nav.setDate();
 setTimeout(() => DOM.overview.renderUpcoming(), 0) 
 setTimeout(() => DOM.overview.renderPending(), 0) 
+setTimeout(() => DOM.calendar.renderCalendar(dateTime.generateCalendar(new Date())), 0) 

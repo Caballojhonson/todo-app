@@ -75,6 +75,8 @@ h4 {
 
 .views {
 	flex-direction: column;
+	justify-content: flex-start;
+	height: 100vh;
 }
 .boxContainers {
 	flex-direction: column;
@@ -141,12 +143,13 @@ h4 {
 #statsContainer {
 	display: flex;
 	width: 80%;
+	max-width: 22rem;
 	justify-content: space-evenly;
 }
 .statsContainer {
 	margin-top: 1rem;
 	flex-direction: column;
-	width:100%
+	width: 100%;
 }
 #completeContainer {
 	border-left: 1px solid black;
@@ -156,6 +159,29 @@ h4 {
 
 #calendarView {
 	display: none;
+}
+#calendar {
+	display: grid;
+	grid-template-columns: repeat(7, 10%);
+	gap: 1.5%;
+	width: 100%;
+	max-width: 25rem;
+	height: max-content;
+	margin: 1rem;
+}
+.calendarCell {
+	border: 1px solid darkgray;
+	border-radius: 1px;
+	aspect-ratio: 1;
+	cursor: pointer;
+}
+#monthContainer {
+	justify-content: space-evenly;
+	width: 80%;
+}
+.monthBtn {
+	width: 1.5rem;
+
 }
 
 /* PROJECTS */

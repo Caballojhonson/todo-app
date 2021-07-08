@@ -4,6 +4,8 @@ import projectsIcon from '../icons/project.png';
 import notesIcon from '../icons/note.png';
 import editIcon from '../icons/edit.png';
 import addIcon from '../icons/add.png';
+import leftIcon from '../icons/left.png';
+import rightIcon from '../icons/right.png';
 import { dateTime } from './dateTime';
 import { logic } from './logic';
 import { formatDistanceStrict } from 'date-fns';
@@ -124,7 +126,43 @@ const DOM = (() => {
 	})();
 
 	const calendar = (() => {
-		
+		const monthContainer = get('monthContainer');
+		const left = get('previousMonth');
+		const month = get('month');
+		const right = get('nextMonth');
+
+		left.src = leftIcon;
+		month.textContent = `${dateTime.thisMonth.monthAndYear}`;
+		right.src = rightIcon;
+
+		const renderCalendar = (dayArray) => {
+			const calendar = get('calendar');
+			calendar.innerHTML = '';
+
+			for (let i = 0; i < dayArray.length; i++) {
+				let cell = document.createElement('div');
+				cell.classList.add('calendarCell');
+				cell.id = i;
+				cell.textContent = dayArray[i];
+				calendar.appendChild(cell);
+			}
+		};
+
+		left.addEventListener('click', () => {
+			let currentMonth = month.textContent;
+			month.textContent = dateTime.substractMonth(currentMonth);
+			currentMonth = month.textContent;
+			renderCalendar(dateTime.generateCalendar(currentMonth));
+		});
+
+		right.addEventListener('click', () => {
+			let currentMonth = month.textContent;
+			month.textContent = dateTime.addMonth(currentMonth);
+			currentMonth = month.textContent;
+			renderCalendar(dateTime.generateCalendar(currentMonth));
+		});
+
+		return { renderCalendar };
 	})();
 
 	const navigation = (() => {
@@ -166,7 +204,7 @@ const DOM = (() => {
 		});
 	})();
 
-	return { nav, overview };
+	return { nav, overview, calendar };
 })();
 
 export { DOM };
