@@ -3,12 +3,10 @@ import { formatDistanceStrict } from 'date-fns/esm';
 import { logic } from './logic';
 
 const dateTime = (() => {
-
-
 	const now = () => new Date();
 
 	const getTime = () => format(now(), 'p');
-	
+
 	const current = {
 		day: format(now(), 'P'),
 		time: format(now(), 'p'),
@@ -24,10 +22,20 @@ const dateTime = (() => {
 	const getTimeToUpcomingDeadlines = () => {
 		let times = [];
 		for (let i = 0; i < logic.getUpcomingTasks().length; i++) {
-			times.push(formatDistanceStrict(now(), new Date(logic.getUpcomingTasks()[i].deadline)));
+			times.push(
+				formatDistanceStrict(
+					now(),
+					new Date(logic.getUpcomingTasks()[i].deadline)
+				)
+			);
 		}
 		return times;
-	}
+	};
+
+	const timeTill = (date) => {
+		let response = formatDistanceStrict(now(), new Date(date));
+		return response;
+	};
 
 	const generateCalendar = (date) => {
 		let numberOfDays = getDaysInMonth(new Date(date));
@@ -38,19 +46,27 @@ const dateTime = (() => {
 		}
 
 		return daysInMonth;
-	}
+	};
 
 	const addMonth = (date) => {
-		let result = add(new Date(date), {months: 1});
-		return format(result, `LLLL yyyy`)
-	}
+		let result = add(new Date(date), { months: 1 });
+		return format(result, `LLLL yyyy`);
+	};
 	const substractMonth = (date) => {
-		let result = sub(new Date(date), {months: 1})
-		return format(result, `LLLL yyyy`)
-	}
+		let result = sub(new Date(date), { months: 1 });
+		return format(result, `LLLL yyyy`);
+	};
 
-
-	return { current, thisMonth, getTime, getTimeToUpcomingDeadlines, generateCalendar, addMonth, substractMonth };
+	return {
+		current,
+		thisMonth,
+		getTime,
+		getTimeToUpcomingDeadlines,
+		generateCalendar,
+		addMonth,
+		substractMonth,
+		timeTill,
+	};
 })();
 
 export { dateTime };

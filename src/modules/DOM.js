@@ -8,8 +8,6 @@ import leftIcon from '../icons/left.png';
 import rightIcon from '../icons/right.png';
 import { dateTime } from './dateTime';
 import { logic } from './logic';
-import { formatDistanceStrict } from 'date-fns';
-import { storage } from './storage';
 
 function getAll(selector) {
 	return document.querySelectorAll(selector);
@@ -64,7 +62,7 @@ const DOM = (() => {
 
 				let priorityBox = createDiv('priorityCircles', box);
 				priorityBox.textContent = logic.getUpcomingTasks()[i].priority;
-				logic.changePriorityColor(logic.getUpcomingTasks()[i], priorityBox);
+				logic.setPriorityCircleColor(logic.getUpcomingTasks()[i], priorityBox);
 
 				let textContainer = createDiv('upcomingTextContainer', box);
 
@@ -126,7 +124,6 @@ const DOM = (() => {
 	})();
 
 	const calendar = (() => {
-		const monthContainer = get('monthContainer');
 		const left = get('previousMonth');
 		const month = get('month');
 		const right = get('nextMonth');
@@ -135,6 +132,8 @@ const DOM = (() => {
 		month.textContent = `${dateTime.thisMonth.monthAndYear}`;
 		right.src = rightIcon;
 
+		//CALENDAR
+
 		const renderCalendar = (dayArray) => {
 			const calendar = get('calendar');
 			calendar.innerHTML = '';
@@ -142,9 +141,50 @@ const DOM = (() => {
 			for (let i = 0; i < dayArray.length; i++) {
 				let cell = document.createElement('div');
 				cell.classList.add('calendarCell');
-				cell.id = i;
+				cell.id = i + 1;
 				cell.textContent = dayArray[i];
 				calendar.appendChild(cell);
+			}
+
+			const calendarCells = document.querySelectorAll('.calendarCell');
+
+			for (let i = 0; i < calendarCells.length; i++) {
+				calendarCells[i].addEventListener('click', (e) => {
+					renderCalendarTasks(e.target.id);
+					resetCellStyles();
+					highlightCell(e.target.id);
+				});
+			}
+			styleDeadlineDays();
+		};
+
+		const styleDeadlineDays = () => {
+			let days = getAll('.calendarCell');
+
+			for (let i = 0; i < days.length; i++) {
+				//console.log(`${days[i].id} ${month.textContent}`)
+				if (logic.dayHasDeadline(`${days[i].id} ${month.textContent}`)) {
+					let priorityNum = logic.getHighestPriority(
+						`${days[i].id} ${month.textContent}`
+					);
+					let dayToStyle = get(days[i].id);
+					dayToStyle.style.borderColor = logic.getPriorityColor(priorityNum);
+					dayToStyle.style.borderWidth = '3px';
+				}
+			}
+		};
+
+		const highlightCell = (id) => {
+			const cell = get(id);
+			cell.style.border = '3px solid black';
+			cell.style.backgroundColor = 'RGB(204, 254, 255)';
+		};
+
+		const resetCellStyles = (id) => {
+			const cells = getAll('.calendarCell');
+			for (let i = 0; i < cells.length; i++) {
+				cells[i].style.border = '1px solid darkgray';
+				cells[i].style.backgroundColor = 'white';
 			}
 		};
 
@@ -162,7 +202,50 @@ const DOM = (() => {
 			renderCalendar(dateTime.generateCalendar(currentMonth));
 		});
 
-		return { renderCalendar };
+		//CALENDAR TASK SECTION
+
+		const renderCalendarTasks = (dayId) => {
+			const getDate = (id) => {
+				let day = parseInt(id);
+				let date = `${day} ${month.textContent}`;
+				return date;
+			};
+
+			let date = getDate(dayId);
+			const taskArray = logic.getTasksForDay(date);
+
+			const container = get('calendarTaskContainer');
+			container.innerHTML = '';
+
+			for (let i = 0; i < taskArray.length; i++) {
+				const projectTitle = taskArray[i][0];
+				const task = taskArray[i][1];
+
+				const taskCard = createDiv('calendarTask', container);
+				const timeTillBox = createDiv('timeTillBox', taskCard);
+
+				createText(
+					'h5',
+					'calendarTaskTimeTill',
+					`${logic.dueOrOverdue(
+						task.deadline,
+						dateTime.timeTill(task.deadline)
+					)}`,
+					timeTillBox
+				);
+
+				createText('h4', 'calendarProjectTitle', `${projectTitle}`, taskCard);
+				createText('h5', 'calendarTaskTitle', `${task.name}`, taskCard);
+				createText(
+					'h6',
+					'calendarTaskDescription',
+					`${task.description}`,
+					taskCard
+				);
+			}
+		};
+
+		return { renderCalendar, renderCalendarTasks };
 	})();
 
 	const navigation = (() => {
@@ -203,6 +286,8 @@ const DOM = (() => {
 			notesView.style.display = 'flex';
 		});
 	})();
+
+	//const eventHandling = (() => {})();
 
 	return { nav, overview, calendar };
 })();
