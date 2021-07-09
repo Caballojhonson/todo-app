@@ -212,6 +212,14 @@ h4 {
 	margin: 0.7rem;
 	background-color: cornsilk;
 }
+.calendarPriorities{
+	grid-column: 5 / span 1;
+	grid-row: 1 / span 1;
+	align-self: start;
+	justify-self: end;
+	bottom: 0;
+	right: 0;
+}
 .calendarProjectTitle{
 	align-self: end;
 	margin-left: -1rem;

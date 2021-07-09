@@ -153,6 +153,7 @@ const DOM = (() => {
 					renderCalendarTasks(e.target.id);
 					resetCellStyles();
 					highlightCell(e.target.id);
+					styleDeadlineDays();
 				});
 			}
 			styleDeadlineDays();
@@ -162,7 +163,7 @@ const DOM = (() => {
 			let days = getAll('.calendarCell');
 
 			for (let i = 0; i < days.length; i++) {
-				//console.log(`${days[i].id} ${month.textContent}`)
+
 				if (logic.dayHasDeadline(`${days[i].id} ${month.textContent}`)) {
 					let priorityNum = logic.getHighestPriority(
 						`${days[i].id} ${month.textContent}`
@@ -223,6 +224,11 @@ const DOM = (() => {
 
 				const taskCard = createDiv('calendarTask', container);
 				const timeTillBox = createDiv('timeTillBox', taskCard);
+
+				const priorityCircle = createDiv('priorityCircles', taskCard);
+				priorityCircle.classList.add('calendarPriorities')
+				priorityCircle.textContent = logic.getUpcomingTasks()[i].priority;
+				logic.setPriorityCircleColor(logic.getUpcomingTasks()[i], priorityCircle);
 
 				createText(
 					'h5',
