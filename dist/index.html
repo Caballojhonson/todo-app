@@ -19,6 +19,21 @@
 			<img id="notesIcon" class="navBtn" />
 		</nav>
 
+		<div class="form" id="newProjectPopup">
+
+			<form id="newProjectForm"> 
+				<h1 id="newProjectTitle">New project</h1>
+				<label for="name">Name</label>
+				<input type="text" name="name" class="nameInput" autocomplete="off">
+				<label for="description">Description</label>
+				<textarea name="description" class="descriptionInput" autocomplete="off"></textarea>
+				<div class="btnsContainer">
+					<div class="formBtn addBtn" id="addNewProject">ADD</div>
+					<div class="formBtn cancelBtn" id="cancelNewProject">CANCEL</div>
+				</div>
+			</form>
+		</div>
+
 		<div class="views overview" id="overview">
 			<h1 class="overview" id="overviewTitle">Overview</h1>
 			<h4 class="overview" id="upcomingTitle">Upcoming deadlines:</h4>
@@ -50,7 +65,10 @@
 
 		<div class="views projects" id="projectsView">
 			<h1>Projects</h1>
+			<img class="newBtn" id="newProjectBtn">
 		</div>
+
+		
 
 		<div class="views notes" id="notesView">
 			<h1>Notes</h1>

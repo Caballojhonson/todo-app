@@ -84,3 +84,6 @@ setTimeout(
 	() => DOM.calendar.renderCalendar(dateTime.generateCalendar(new Date())),
 	0
 );
+setTimeout(() => DOM.projects.renderProjects(), 0);
+
+

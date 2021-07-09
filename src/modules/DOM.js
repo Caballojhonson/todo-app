@@ -152,8 +152,8 @@ const DOM = (() => {
 				calendarCells[i].addEventListener('click', (e) => {
 					renderCalendarTasks(e.target.id);
 					resetCellStyles();
-					highlightCell(e.target.id);
 					styleDeadlineDays();
+					highlightCell(e.target.id);
 				});
 			}
 			styleDeadlineDays();
@@ -163,7 +163,6 @@ const DOM = (() => {
 			let days = getAll('.calendarCell');
 
 			for (let i = 0; i < days.length; i++) {
-
 				if (logic.dayHasDeadline(`${days[i].id} ${month.textContent}`)) {
 					let priorityNum = logic.getHighestPriority(
 						`${days[i].id} ${month.textContent}`
@@ -226,9 +225,12 @@ const DOM = (() => {
 				const timeTillBox = createDiv('timeTillBox', taskCard);
 
 				const priorityCircle = createDiv('priorityCircles', taskCard);
-				priorityCircle.classList.add('calendarPriorities')
+				priorityCircle.classList.add('calendarPriorities');
 				priorityCircle.textContent = logic.getUpcomingTasks()[i].priority;
-				logic.setPriorityCircleColor(logic.getUpcomingTasks()[i], priorityCircle);
+				logic.setPriorityCircleColor(
+					logic.getUpcomingTasks()[i],
+					priorityCircle
+				);
 
 				createText(
 					'h5',
@@ -252,6 +254,17 @@ const DOM = (() => {
 		};
 
 		return { renderCalendar, renderCalendarTasks };
+	})();
+
+	// PROJECTS
+
+	const projects = (() => {
+		const renderProjects = () => {
+			let addBtn = get('newProjectBtn');
+			addBtn.src = addIcon;
+		};
+
+		return { renderProjects };
 	})();
 
 	const navigation = (() => {
@@ -293,9 +306,25 @@ const DOM = (() => {
 		});
 	})();
 
-	//const eventHandling = (() => {})();
+	const eventHandling = (() => {
+		const newProjectBtn = get('newProjectBtn');
+		newProjectBtn.addEventListener('click', () => {
+			const popup = get('newProjectPopup');
+			popup.style.display = 'flex';
+			newProjectBtn.style.display = 'none';
+		});
 
-	return { nav, overview, calendar };
+		window.onclick = (e) => {
+			let modal = get('newProjectPopup');
+			let cancelBtn = get('cancelNewProject')
+			if (e.target == modal || e.target == cancelBtn) {
+				modal.style.display = 'none';
+				newProjectBtn.style.display = 'block';
+			}
+		}
+	})();
+
+	return { nav, overview, calendar, projects };
 })();
 
 export { DOM };
