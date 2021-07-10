@@ -158,6 +158,26 @@ const logic = (() => {
 		//returns highest priority number in a given day
 	};
 
+	const getCompletionPercent = (project) => {
+		const tasks = project.tasks;
+		let completedTasks = [];
+
+		for (let i = 0; i < tasks.length; i++) {
+			let completed = tasks[i].complete;
+
+			if (completed === true) completedTasks.push(tasks[i])
+		}
+		let percentage = Math.round((completedTasks.length / tasks.length) * 100)
+
+		return `${percentage}%`
+	}
+
+	const generateProjectCompletionText = (project) => {
+		if(project.tasks.length === 0) {
+			return 'No tasks in this project'
+		}else return `${logic.getCompletionPercent(storage.projects[i])} Complete`
+	}
+
 	return {
 		sortByDeadline,
 		getUpcomingTasks,
@@ -168,6 +188,8 @@ const logic = (() => {
 		getPriorityColor,
 		dayHasDeadline,
 		getHighestPriority,
+		getCompletionPercent,
+		generateProjectCompletionText,
 	};
 })();
 

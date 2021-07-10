@@ -8,6 +8,8 @@ import leftIcon from '../icons/left.png';
 import rightIcon from '../icons/right.png';
 import { dateTime } from './dateTime';
 import { logic } from './logic';
+import { storage } from './storage';
+import { createProject } from './objects';
 
 function getAll(selector) {
 	return document.querySelectorAll(selector);
@@ -260,8 +262,38 @@ const DOM = (() => {
 
 	const projects = (() => {
 		const renderProjects = () => {
-			let addBtn = get('newProjectBtn');
+			const addBtn = get('newProjectBtn');
 			addBtn.src = addIcon;
+			const container = get('projectContainer');
+
+			for (let i = 0; i < storage.projects.length; i++) {
+				const card = createDiv('projectCard', container);
+
+				createText(
+					'h5',
+					'projectDate',
+					`${storage.projects[i].createdOn.day}`,
+					card
+				);
+				createText('h4', 'projectTitle', `${storage.projects[i].name}`, card);
+				createText(
+					'h6',
+					'projectDescription',
+					`${storage.projects[i].description}`,
+					card
+				);
+				createText(
+					'h4',
+					'completedPercentage',
+					logic.generateProjectCompletionText(storage.projects[i]),
+					card
+				);
+				createDiv('progressBarRed', card);
+				let progressBar = createDiv('progressBarGreen', card);
+				progressBar.style.width = `${logic.getCompletionPercent(
+					storage.projects[i]
+				)}`;
+			}
 		};
 
 		return { renderProjects };
@@ -316,12 +348,26 @@ const DOM = (() => {
 
 		window.onclick = (e) => {
 			let modal = get('newProjectPopup');
-			let cancelBtn = get('cancelNewProject')
+			let cancelBtn = get('cancelNewProject');
 			if (e.target == modal || e.target == cancelBtn) {
 				modal.style.display = 'none';
 				newProjectBtn.style.display = 'block';
 			}
-		}
+		};
+
+		const addNewProject = get('addNewProject');
+		addNewProject.addEventListener('click', () => {
+			createProject(
+				get('projectTitleInput').value,
+				get('projectDescInput').value
+			);
+			storage.loadArrays();
+			let modal = get('newProjectPopup');
+			modal.style.display = 'none';
+				newProjectBtn.style.display = 'block';
+				projects.renderProjects();
+
+		});
 	})();
 
 	return { nav, overview, calendar, projects };

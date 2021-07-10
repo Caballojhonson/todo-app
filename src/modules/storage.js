@@ -5,7 +5,7 @@ const storage = (() => {
 
 	const save = (object) => {
 		saveInArrays(object.type, object);
-		localStore();
+		localStore()		
 	}
 
 	const saveInArrays = (type, object) => {
@@ -23,9 +23,9 @@ const storage = (() => {
 
 
 	const loadArrays = () => {
-			projects = pullAllFromStorage('project')
-			tasks = pullAllFromStorage('task')
-			notes = pullAllFromStorage('note')
+		storage.projects = pullAllFromStorage('project');
+		storage.tasks = pullAllFromStorage('task');
+		storage.notes = pullAllFromStorage('note');
 	}
 
 	//Add index to parameters so you can choose which to pull??

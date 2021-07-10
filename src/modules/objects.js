@@ -1,4 +1,4 @@
-import { closestIndexTo, compareDesc } from 'date-fns';
+
 import { dateTime } from './dateTime';
 import { storage } from './storage';
 

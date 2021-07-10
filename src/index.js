@@ -16,7 +16,7 @@ function makeDummys() {
 	createTask('Make love to Ricardo the goat', 'As usual', '07/03/2021', 2);
 	createTask(
 		"Poop in neighbor's pot as usual",
-		"Try not getting caught this time, don't smear the pink tutu with feces.",
+		"Try not getting caught this time, don't smear feces on pink tutu.",
 		'07/03/2021',
 		3
 	);
@@ -47,15 +47,19 @@ function makeDummys() {
 	);
 
 	const testTask = storage.tasks[0];
+	testTask.complete = true;
 	const testTask2 = storage.tasks[1];
 	const testTask3 = storage.tasks[2];
+	storage.tasks[4].complete = true;
+	storage.tasks[5].complete = true;
+	storage.tasks[6].complete = true;
 
 	createProject(
 		'Keep up with routine',
 		'Do the usual stuff, try to be normal person.'
 	);
 	createProject('anocher prochecht', 'And the description');
-	createProject('Project2', 'This is a description');
+	createProject('Project Name Bah nahnah', `Try  to fuck the goat, if it offers resistance, just tell it it's all going to be fine.  Lie to the goat. Go to people street. Suck their balls!!Don't say anything.  Just lie again. They won't notice anything. Don't call police, they don't like ball licking people. They are gay. Dress In pink to disguise and no consecuences.`);
 	storage.projects[0].tasks.push(testTask, testTask2, testTask3);
 	storage.projects[1].tasks.push(storage.tasks[3], storage.tasks[4]);
 	storage.projects[2].tasks.push(storage.tasks[5], storage.tasks[6]);
@@ -69,21 +73,20 @@ function makeDummys() {
 setTimeout(() => dateTime.getTimeToUpcomingDeadlines(), 5000);
 
 function debug() {
-
 }
 
-setTimeout(() => makeDummys(), 0);
+//setTimeout(() => makeDummys(), 0);
+setTimeout(() => storage.loadArrays(), 0);
 setTimeout(() => debug(), 50);
 
 DOM.nav.renderNav();
 DOM.nav.setClock();
 DOM.nav.setDate();
-setTimeout(() => DOM.overview.renderUpcoming(), 0);
+if (storage.tasks.length > 0) setTimeout(() => DOM.overview.renderUpcoming(), 0);
 setTimeout(() => DOM.overview.renderPending(), 0);
 setTimeout(
 	() => DOM.calendar.renderCalendar(dateTime.generateCalendar(new Date())),
 	0
 );
 setTimeout(() => DOM.projects.renderProjects(), 0);
-
 
