@@ -9,16 +9,16 @@ const storage = (() => {
 	}
 
 	const saveInArrays = (type, object) => {
-		(type === 'project') ? projects.push(object) :
-		(type === 'task') ? tasks.push(object) :
-		(type === 'note') ? notes.push(object) : 
+		(type === 'project') ? storage.projects.push(object) :
+		(type === 'task') ? storage.tasks.push(object) :
+		(type === 'note') ? storage.notes.push(object) : 
 		console.log('Error saving object');
 	}
 
 	const localStore = () => {
-		window.localStorage.setItem('project', JSON.stringify(projects));
-		window.localStorage.setItem('task', JSON.stringify(tasks));
-		window.localStorage.setItem('note', JSON.stringify(notes));
+		window.localStorage.setItem('project', JSON.stringify(storage.projects));
+		window.localStorage.setItem('task', JSON.stringify(storage.tasks));
+		window.localStorage.setItem('note', JSON.stringify(storage.notes));
 	}
 
 

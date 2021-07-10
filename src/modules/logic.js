@@ -174,7 +174,7 @@ const logic = (() => {
 
 	const generateProjectCompletionText = (project) => {
 		if(project.tasks.length === 0) {
-			return 'No tasks in this project'
+			return 'No tasks for this project'
 		}else return `${logic.getCompletionPercent(storage.projects[i])} Complete`
 	}
 

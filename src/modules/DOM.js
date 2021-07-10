@@ -265,6 +265,7 @@ const DOM = (() => {
 			const addBtn = get('newProjectBtn');
 			addBtn.src = addIcon;
 			const container = get('projectContainer');
+			container.innerHTML = '';
 
 			for (let i = 0; i < storage.projects.length; i++) {
 				const card = createDiv('projectCard', container);
@@ -361,12 +362,15 @@ const DOM = (() => {
 				get('projectTitleInput').value,
 				get('projectDescInput').value
 			);
-			storage.loadArrays();
+			projects.renderProjects();
+				console.log(storage.projects);
+			
 			let modal = get('newProjectPopup');
 			modal.style.display = 'none';
 				newProjectBtn.style.display = 'block';
-				projects.renderProjects();
-
+				get('projectTitleInput').value = '';
+				get('projectDescInput').value = '';
+				
 		});
 	})();
 
