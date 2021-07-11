@@ -7,6 +7,8 @@ import deleteIcon from '../icons/delete.png';
 import addIcon from '../icons/add.png';
 import leftIcon from '../icons/left.png';
 import rightIcon from '../icons/right.png';
+import cancelIcon from '../icons/cancelCircle.png';
+import checkIcon from '../icons/checkCircle.png';
 import { dateTime } from './dateTime';
 import { logic } from './logic';
 import { storage } from './storage';
@@ -105,7 +107,7 @@ const DOM = (() => {
 			pendingContainer.innerHTML = '';
 			completeContainer.innerHTML = '';
 
-			createText('h4', 'overview', 'Pending', pendingContainer)
+			createText('h4', 'overview', 'Pending', pendingContainer);
 			createText(
 				'h5',
 				'pendingTasks',
@@ -118,7 +120,7 @@ const DOM = (() => {
 				`${logic.countStats().pendingProjectCount} Projects`,
 				pendingContainer
 			);
-			createText('h4', 'overview', 'Complete', completeContainer)
+			createText('h4', 'overview', 'Complete', completeContainer);
 
 			createText(
 				'h5',
@@ -281,7 +283,7 @@ const DOM = (() => {
 			for (let i = 0; i < storage.projects.length; i++) {
 				const card = createDiv('projectCard', container);
 				card.id = storage.projects[i].index;
-				
+
 				createText('h4', 'projectTitle', `${storage.projects[i].name}`, card);
 				createText(
 					'h5',
@@ -289,7 +291,7 @@ const DOM = (() => {
 					`${storage.projects[i].createdOn.day}`,
 					card
 				);
-				
+
 				createText(
 					'h6',
 					'projectDescription',
@@ -336,6 +338,37 @@ const DOM = (() => {
 					eventHandling.displayTaskPopup(e);
 					eventHandling.populateDate();
 				});
+
+				//	TASKCARD SECTION
+
+				const cardsContainer = createDiv('projectTaskContainer', card);
+				for (let c = 0; c < storage.projects[i].tasks.length; c++) {
+					const taskCard = createDiv('projectTaskCard', cardsContainer);
+					const completionSymbol = createDiv('completionSymbol', taskCard)
+					 
+
+					if (storage.projects[i].tasks[c].complete) {
+						console.log(storage.projects[i].tasks[c].complete);
+						taskCardTitle.style.textDecoration = 'line-through'
+						let checkLogo = new Image();
+						checkLogo.src = checkIcon;
+						checkLogo.classList.add('checkLogo')
+						taskCard.appendChild(checkLogo)
+					}
+					else if (storage.projects[i].tasks[c].complete === false) {
+						let crossLogo = new Image();
+						crossLogo.src = cancelIcon;
+						crossLogo.classList.add('completeLogo')
+						taskCard.appendChild(crossLogo)
+					}
+
+					const taskCardTitle = createText(
+						'h5',
+						'projectTaskCardName',
+						`${storage.projects[i].tasks[c].name}`,
+						taskCard
+					);
+				}
 			}
 		};
 
@@ -375,15 +408,15 @@ const DOM = (() => {
 				`${fromProject}`
 			);
 
-				storage.projects[projectId].tasks.push(
-					storage.tasks[storage.tasks.length - 1]
-				);
-				
-				storage.localStore();
-				projects.renderProjects();
-				overview.renderUpcoming();
-				overview.renderPending();
-				calendar.renderCalendar(dateTime.generateCalendar(new Date()));
+			storage.projects[projectId].tasks.push(
+				storage.tasks[storage.tasks.length - 1]
+			);
+
+			storage.localStore();
+			projects.renderProjects();
+			overview.renderUpcoming();
+			overview.renderPending();
+			calendar.renderCalendar(dateTime.generateCalendar(new Date()));
 		};
 
 		addBtn.addEventListener('click', () => {
