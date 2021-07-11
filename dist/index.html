@@ -19,9 +19,9 @@
 			<img id="notesIcon" class="navBtn" />
 		</nav>
 
-		<div class="form" id="newProjectPopup">
+		<div class="formPopup" id="newProjectPopup">
 
-			<form id="newProjectForm"> 
+			<form class="form" id="newProjectForm"> 
 				<h1 id="newProjectTitle">New project</h1>
 				<label for="name">Name</label>
 				<input id="projectTitleInput" type="text" name="name" class="nameInput" autocomplete="off">
@@ -30,6 +30,35 @@
 				<div class="btnsContainer">
 					<div class="formBtn addBtn" id="addNewProject">ADD</div>
 					<div class="formBtn cancelBtn" id="cancelNewProject">CANCEL</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="formPopup" id="newTaskPopup">
+
+			<form class="form" id="newTaskForm"> 
+				<h1 id="newTaskTitle">New Task</h1>
+				<label for="name">Name</label>
+				<input id="taskTitleInput" type="text" name="name" class="nameInput" autocomplete="off">
+				<div id="priorityContainter">
+					<label>Priority</label>
+					<div id="priorityCirclesContainer">
+						<div class="priorityCircles formCircles" id="prior1" style="background-color: rgba(142,255,69,1);">1</div>
+						<div class="priorityCircles formCircles" id="prior2" style="background-color: rgba(77,191,0,1);">2</div>
+						<div class="priorityCircles formCircles" id="prior3" style="background-color: rgba(255,213,0,1);">3</div>
+						<div class="priorityCircles formCircles" id="prior4" style="background-color: rgba(255,92,0,1);">4</div>
+						<div class="priorityCircles formCircles" id="prior5" style="background-color: rgba(255,0,0,1);">5</div>
+					</div>
+				</div>
+				<div id="dueDateContainer">
+					<label>Due date</label>
+					<input class="nameInput" id="dueDateInput" type="text">
+				</div>
+				<label for="description">Description</label>
+				<textarea id="taskDescInput" name="description" class="descriptionInput" autocomplete="off"></textarea>
+				<div class="btnsContainer">
+					<div class="formBtn addBtn" id="addNewTask">ADD</div>
+					<div class="formBtn cancelBtn" id="cancelNewTask">CANCEL</div>
 				</div>
 			</form>
 		</div>

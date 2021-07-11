@@ -30,10 +30,6 @@ h5,
 h6 {
 	margin: 0.2rem 0rem 0.2rem 0rem;
 }
-h6 {
-	font-family: 'OswaldExtraLight';
-	font-size: 16px;
-}
 
 /* NAVBAR */
 
@@ -116,7 +112,7 @@ h4 {
 }
 
 /* PROJECT FORM */
-#newProjectPopup {
+#newProjectPopup, .formPopup {
 	display: none;
 	align-items: center;
 	justify-content: center;
@@ -125,7 +121,7 @@ h4 {
 	width: 100%;
 	background-color: rgba(56, 56, 56, 0.329);
 }
-#newProjectForm {
+.form {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -148,7 +144,7 @@ h4 {
 	border-width: 1px;
 }
 .descriptionInput {
-	height: 4rem;
+	height: 6rem;
 }
 .btnsContainer {
 	height: 35%;
@@ -170,6 +166,41 @@ h4 {
 .cancelBtn {
 	background-color: lightsalmon;
 }
+
+/* TASK FORM */
+
+#newTaskPopup {
+	display: none;
+}
+#priorityContainter, #dueDateContainer {
+	width: 80%;
+	justify-content: space-between;
+	margin-top: 0.5rem;
+}
+#priorityCirclesContainer {
+	justify-content: space-evenly;
+	width:70%;
+}
+.formCircles {
+	position: static;
+	line-height: 0rem;
+	max-width: 3rem;
+	width: 1.3rem;
+	height: 1.3rem;
+	cursor: pointer;
+}
+#taskTitleInput {
+	margin-bottom: 1.5rem;
+}
+#dueDateContainer {
+	margin-top: 0.8rem;
+	margin-bottom: 1.5rem;
+}
+#dueDateInput {
+	width: 55%;
+	text-align: center;
+}
+
 /* OVERVIEW */
 
 #overview {
@@ -317,7 +348,7 @@ h4 {
 }
 .newBtn {
 	position: fixed;
-	bottom: 5rem;
+	bottom: 4.2rem;
 	right: 2rem;
 	width: 3rem;
 	cursor: pointer;
@@ -328,7 +359,7 @@ h4 {
 .projectCard {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
-	grid-template-rows: repeat(5, auto);
+	grid-template-rows: repeat(6, auto);
 	margin: 0.5rem 0px 0.5rem 0px;
 	border: 1px solid darkgray;
 	border-radius: 5px;
@@ -338,14 +369,16 @@ h4 {
 	padding: 0.5rem 1rem 0.5rem 1rem;
 }
 .projectDate {
-	grid-column: 1 / span 2;
+	grid-column: 4 / span 2;
 	grid-row: 1 / span 1;
 }
 .projectTitle {
-	grid-column: 3 / span 3;
+	grid-column: 1 / span 3;
 	grid-row: 1 / span 1;
 }
 .projectDescription {
+	font-size: 13px;
+	font-family: 'OswaldExtraLight';
 	grid-column: 1 / span 5;
 	grid-row: 2 / span 2;
 }
@@ -369,6 +402,26 @@ h4 {
 	width: 0%;
 	height: 0.3rem;
 	border: 1px solid black;
+}
+.projectCardBtnContainer {
+	grid-column: 1 / span 5;
+	grid-row: 6 / span 1;
+	margin: 1rem 1rem 0rem 0rem;
+}
+.deleteBtn, .editBtn {
+	width: 2.2rem;
+	margin: 0px 0.6rem 0px 0.6rem;
+	cursor: pointer;
+}
+.editBtn{
+	margin-top: 0.1rem;
+}
+.addTask {
+	padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+	margin-left: auto;
+	border: 2px solid black; 
+	border-radius: 0.3rem;
+	cursor: pointer;
 }
 
 /* NOTES */

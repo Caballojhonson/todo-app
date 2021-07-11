@@ -8,6 +8,7 @@ import { storage } from './storage';
 		const complete = false;
 		const tasks = [];
 		const createdOn = dateTime.current;
+		const index = storage.projects.length;
 
 		storage.save({
 			name,
@@ -15,15 +16,16 @@ import { storage } from './storage';
 			tasks,
 			createdOn,
 			complete,
-			type
+			type,
+			index
 		});
 	};
 
-	const createTask = (name, description, deadline, priority) => {
+	const createTask = (name, description, deadline, priority, fromProject) => {
 		const type = 'task';
 		const createdOn = dateTime.current;
 		const complete = false;
-		const fromProject = 'Dummy Project';
+		const index = storage.tasks.length;
 
 		storage.save({
 			name,
@@ -33,18 +35,21 @@ import { storage } from './storage';
 			createdOn,
 			complete,
 			type,
-			fromProject
+			fromProject,
+			index
 		});
 	};
 
 	const createNote = (content) => {
 		const type = 'note';
 		const createdOn = dateTime.current;
+		const index = storage.notes.length;
 
 		storage.save({
 			content,
 			createdOn,
-			type
+			type,
+			index
 		});
 	};
 

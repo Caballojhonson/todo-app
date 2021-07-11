@@ -23,23 +23,38 @@ const storage = (() => {
 
 
 	const loadArrays = () => {
-		storage.projects = pullAllFromStorage('project');
-		storage.tasks = pullAllFromStorage('task');
-		storage.notes = pullAllFromStorage('note');
+
+		if (pullAllFromStorage('project') === null) {storage.projects = []}
+		else {storage.projects = pullAllFromStorage('project');}
+
+		if (pullAllFromStorage('task') === null) {storage.tasks = []}
+		else {storage.tasks = pullAllFromStorage('task');}
+		
+		if (pullAllFromStorage('note') === null) {storage.notes = []}
+		else {storage.notes = pullAllFromStorage('note');}
 	}
 
-	//Add index to parameters so you can choose which to pull??
 	const pullAllFromStorage = (type) => {
 		const parsed = JSON.parse(window.localStorage.getItem(type));
 		return parsed;
 	};
+
+	const deleteObject = (type, index) => {
+		(type === 'project') ? storage.projects.splice(index, 1) :
+		(type === 'task') ? storage.tasks.splice(index, 1) :
+		(type === 'note') ? storage.notes.splice(index, 1) : 
+		console.log('Error removing object');
+		localStore();
+	}
 	
 	return {
 		projects,
 		tasks,
 		notes,
 		save,
+		localStore,
 		loadArrays,
+		deleteObject,
 	};
 })();
 

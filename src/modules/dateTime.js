@@ -4,6 +4,7 @@ import { logic } from './logic';
 
 const dateTime = (() => {
 	const now = () => new Date();
+	const yesterday = () => sub(new Date(), {days: 1});
 
 	const getTime = () => format(now(), 'p');
 
@@ -24,7 +25,7 @@ const dateTime = (() => {
 		for (let i = 0; i < logic.getUpcomingTasks().length; i++) {
 			times.push(
 				formatDistanceStrict(
-					now(),
+					yesterday(),
 					new Date(logic.getUpcomingTasks()[i].deadline)
 				)
 			);
@@ -33,7 +34,7 @@ const dateTime = (() => {
 	};
 
 	const timeTill = (date) => {
-		let response = formatDistanceStrict(now(), new Date(date));
+		let response = formatDistanceStrict(yesterday(), new Date(date));
 		return response;
 	};
 

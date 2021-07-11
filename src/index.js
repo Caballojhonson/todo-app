@@ -70,25 +70,26 @@ function makeDummys() {
 	);
 }
 
-//setTimeout(() => dateTime.getTimeToUpcomingDeadlines(), 5000);
+setTimeout(() => dateTime.getTimeToUpcomingDeadlines(), 5000);
 
 function debug() {
 	console.log(storage.projects);
-	console.log(localStorage);
+	console.log(storage.tasks)
+	//storage.projects[0].tasks = [];
+
 }
 
 //setTimeout(() => makeDummys(), 0);
-if(storage.projects.length === 0) setTimeout(() => storage.loadArrays(), 0);
+setTimeout(() => storage.loadArrays(), 0);
 setTimeout(() => debug(), 50);
 
 DOM.nav.renderNav();
 DOM.nav.setClock();
 DOM.nav.setDate();
-//if (storage.tasks.length > 0) setTimeout(() => DOM.overview.renderUpcoming(), 0);
-//setTimeout(() => DOM.overview.renderPending(), 0);
-if (storage.tasks.length > 0) setTimeout(
+setTimeout(() => DOM.overview.renderUpcoming(), 0);
+setTimeout(() => DOM.overview.renderPending(), 0);
+setTimeout(
 	() => DOM.calendar.renderCalendar(dateTime.generateCalendar(new Date())),
 	0
 );
 setTimeout(() => DOM.projects.renderProjects(), 50);
-

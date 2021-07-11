@@ -3,17 +3,21 @@ import { storage } from './storage';
 
 const logic = (() => {
 	const sortByDeadline = () => {
+		if (storage.tasks.length > 1){
 		return storage.tasks.sort((a, b) =>
 			new Date(a.deadline) < new Date(b.deadline) ? -1 : 1
 		);
+		}else return storage.tasks;
 	};
 	const getUpcomingTasks = () => {
 		let list = [];
+		if (storage.tasks.length >= 3) {
 		for (let i = 0; i < 3; i++) {
 			list.push(sortByDeadline()[i]);
 		}
-
 		return list;
+	} else return storage.tasks
+
 	};
 
 	const dueOrOverdue = (deadline, timeTo) => {
@@ -22,35 +26,35 @@ const logic = (() => {
 	};
 
 	const getPriorityColor = (priority) => {
-		if (priority === 1) return 'rgba(142,255,69,1)';
-		if (priority === 2) return 'rgba(77,191,0,1)';
-		if (priority === 3) return 'rgba(255,213,0,1)';
-		if (priority === 4) return 'rgba(255,92,0,1)';
-		if (priority === 5) return 'rgba(255,0,0,1)';
+		if (priority == 1) return 'rgba(142,255,69,1)';
+		if (priority == 2) return 'rgba(77,191,0,1)';
+		if (priority == 3) return 'rgba(255,213,0,1)';
+		if (priority == 4) return 'rgba(255,92,0,1)';
+		if (priority == 5) return 'rgba(255,0,0,1)';
 	};
 
 	const setPriorityCircleColor = (object, element) => {
-		if (object.priority === 1) {
+		if (object.priority == 1) {
 			element.style.background = `radial-gradient(circle, ${getPriorityColor(
 				object.priority
 			)} 40%, rgba(255,255,255,0) 100%)`;
 		}
-		if (object.priority === 2) {
+		if (object.priority == 2) {
 			element.style.background = `radial-gradient(circle, ${getPriorityColor(
 				object.priority
 			)} 40%, rgba(255,255,255,0) 100%)`;
 		}
-		if (object.priority === 3) {
+		if (object.priority == 3) {
 			element.style.background = `radial-gradient(circle, ${getPriorityColor(
 				object.priority
 			)} 40%, rgba(255,255,255,0) 100%)`;
 		}
-		if (object.priority === 4) {
+		if (object.priority == 4) {
 			element.style.background = `radial-gradient(circle, ${getPriorityColor(
 				object.priority
 			)} 40%, rgba(255,255,255,0) 100%)`;
 		}
-		if (object.priority === 5) {
+		if (object.priority == 5) {
 			element.style.background = `radial-gradient(circle, ${getPriorityColor(
 				object.priority
 			)} 40%, rgba(255,255,255,0) 100%)`;
@@ -172,10 +176,21 @@ const logic = (() => {
 		return `${percentage}%`
 	}
 
-	const generateProjectCompletionText = (project) => {
+	const generateProjectCompletionText = (project, index) => {
 		if(project.tasks.length === 0) {
 			return 'No tasks for this project'
-		}else return `${logic.getCompletionPercent(storage.projects[i])} Complete`
+		}else return `${logic.getCompletionPercent(storage.projects[index])} Complete`
+	}
+
+	const resetIndexes = (objectArray) => {
+		for (let i = 0; i < objectArray.length; i++) {
+			objectArray[i].index = i;
+		}
+	}
+
+	const removeItem = (type, index, fromArray) => {
+		storage.deleteObject(type, index);
+		resetIndexes(fromArray);
 	}
 
 	return {
@@ -190,6 +205,8 @@ const logic = (() => {
 		getHighestPriority,
 		getCompletionPercent,
 		generateProjectCompletionText,
+		resetIndexes,
+		removeItem,
 	};
 })();
 

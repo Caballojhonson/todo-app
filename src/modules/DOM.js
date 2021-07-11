@@ -3,13 +3,14 @@ import calendarIcon from '../icons/calendar.png';
 import projectsIcon from '../icons/project.png';
 import notesIcon from '../icons/note.png';
 import editIcon from '../icons/edit.png';
+import deleteIcon from '../icons/delete.png';
 import addIcon from '../icons/add.png';
 import leftIcon from '../icons/left.png';
 import rightIcon from '../icons/right.png';
 import { dateTime } from './dateTime';
 import { logic } from './logic';
 import { storage } from './storage';
-import { createProject } from './objects';
+import { createProject, createTask } from './objects';
 
 function getAll(selector) {
 	return document.querySelectorAll(selector);
@@ -34,6 +35,8 @@ function createDiv(clss, appendTo) {
 }
 
 const DOM = (() => {
+	// NAVBAR
+
 	const nav = (() => {
 		const renderNav = () => {
 			const elements = getAll('.navBtn');
@@ -56,9 +59,13 @@ const DOM = (() => {
 		return { renderNav, setClock, setDate };
 	})();
 
+	//	OVERVIEW
+
 	const overview = (() => {
 		const renderUpcoming = () => {
 			let container = get('upcomingContainer');
+			container.innerHTML = '';
+
 			for (let i = 0; i < logic.getUpcomingTasks().length; i++) {
 				let box = createDiv('boxes', container);
 
@@ -95,7 +102,10 @@ const DOM = (() => {
 		const renderPending = () => {
 			const pendingContainer = get('pendingContainer');
 			const completeContainer = get('completeContainer');
+			pendingContainer.innerHTML = '';
+			completeContainer.innerHTML = '';
 
+			createText('h4', 'overview', 'Pending', pendingContainer)
 			createText(
 				'h5',
 				'pendingTasks',
@@ -108,6 +118,7 @@ const DOM = (() => {
 				`${logic.countStats().pendingProjectCount} Projects`,
 				pendingContainer
 			);
+			createText('h4', 'overview', 'Complete', completeContainer)
 
 			createText(
 				'h5',
@@ -125,6 +136,8 @@ const DOM = (() => {
 		return { renderUpcoming, renderPending };
 	})();
 
+	//CALENDAR
+
 	const calendar = (() => {
 		const left = get('previousMonth');
 		const month = get('month');
@@ -133,8 +146,6 @@ const DOM = (() => {
 		left.src = leftIcon;
 		month.textContent = `${dateTime.thisMonth.monthAndYear}`;
 		right.src = rightIcon;
-
-		//CALENDAR
 
 		const renderCalendar = (dayArray) => {
 			const calendar = get('calendar');
@@ -269,14 +280,16 @@ const DOM = (() => {
 
 			for (let i = 0; i < storage.projects.length; i++) {
 				const card = createDiv('projectCard', container);
-
+				card.id = storage.projects[i].index;
+				
+				createText('h4', 'projectTitle', `${storage.projects[i].name}`, card);
 				createText(
 					'h5',
 					'projectDate',
 					`${storage.projects[i].createdOn.day}`,
 					card
 				);
-				createText('h4', 'projectTitle', `${storage.projects[i].name}`, card);
+				
 				createText(
 					'h6',
 					'projectDescription',
@@ -286,7 +299,7 @@ const DOM = (() => {
 				createText(
 					'h4',
 					'completedPercentage',
-					logic.generateProjectCompletionText(storage.projects[i]),
+					logic.generateProjectCompletionText(storage.projects[i], i),
 					card
 				);
 				createDiv('progressBarRed', card);
@@ -294,11 +307,98 @@ const DOM = (() => {
 				progressBar.style.width = `${logic.getCompletionPercent(
 					storage.projects[i]
 				)}`;
+
+				// PROJECTCARD BUTTONS
+
+				let btnsContainer = createDiv('projectCardBtnContainer', card);
+				let deleteBtn = new Image();
+				deleteBtn.src = deleteIcon;
+				deleteBtn.classList.add('deleteBtn');
+
+				let editBtn = new Image();
+				editBtn.src = editIcon;
+				editBtn.classList.add('editBtn');
+
+				btnsContainer.appendChild(deleteBtn);
+				btnsContainer.appendChild(editBtn);
+				let addTaskBtn = createText('h3', 'addTask', 'Add Task', btnsContainer);
+
+				deleteBtn.addEventListener('click', (e) => {
+					logic.removeItem(
+						'project',
+						e.target.parentNode.parentNode.id,
+						storage.projects
+					);
+					renderProjects();
+				});
+
+				addTaskBtn.addEventListener('click', (e) => {
+					eventHandling.displayTaskPopup(e);
+					eventHandling.populateDate();
+				});
 			}
 		};
 
 		return { renderProjects };
 	})();
+
+	//	TASKS
+
+	const tasks = (() => {
+		const addBtn = get('addNewTask');
+		const nameInput = get('taskTitleInput');
+		const dueDateInput = get('dueDateInput');
+		const descriptionInput = get('taskDescInput');
+
+		const addNewTask = () => {
+			const projectId = get('newTaskForm').firstChild.nextSibling.id;
+			const name = nameInput.value;
+			const dueDate = dueDateInput.value;
+			const description = descriptionInput.value;
+			const fromProject = storage.projects[projectId].name;
+
+			const isChecked = () => {
+				let circles = getAll('.formCircles');
+				for (let i = 0; i < circles.length; i++) {
+					if (circles[i].style.border === '2px solid black') {
+						return circles[i].textContent;
+					}
+				}
+				return 1;
+			};
+
+			createTask(
+				`${name}`,
+				`${description}`,
+				`${dueDate}`,
+				`${isChecked()}`,
+				`${fromProject}`
+			);
+
+				storage.projects[projectId].tasks.push(
+					storage.tasks[storage.tasks.length - 1]
+				);
+				
+				storage.localStore();
+				projects.renderProjects();
+				overview.renderUpcoming();
+				overview.renderPending();
+				calendar.renderCalendar(dateTime.generateCalendar(new Date()));
+		};
+
+		addBtn.addEventListener('click', () => {
+			addNewTask();
+			const taskFormPopup = get('newTaskPopup');
+			taskFormPopup.style.display = 'none';
+			newProjectBtn.style.display = 'block';
+			nameInput.value = '';
+			descriptionInput.value = '';
+			eventHandling.resetBorders();
+		});
+		return {};
+	})();
+
+	// NAV BUTTON HANDLERS
 
 	const navigation = (() => {
 		const statsBtn = get('statsIcon');
@@ -339,7 +439,10 @@ const DOM = (() => {
 		});
 	})();
 
+	//	EVENT HANDLERS
+
 	const eventHandling = (() => {
+		// DISPLAY PROJECT FORM
 		const newProjectBtn = get('newProjectBtn');
 		newProjectBtn.addEventListener('click', () => {
 			const popup = get('newProjectPopup');
@@ -347,14 +450,35 @@ const DOM = (() => {
 			newProjectBtn.style.display = 'none';
 		});
 
+		// HIDE FORMS ON CANCEL OR MODAL CLICK
+
 		window.onclick = (e) => {
-			let modal = get('newProjectPopup');
-			let cancelBtn = get('cancelNewProject');
-			if (e.target == modal || e.target == cancelBtn) {
-				modal.style.display = 'none';
+			let projectModal = get('newProjectPopup');
+			let projectCancelBtn = get('cancelNewProject');
+			let taskModal = get('newTaskPopup');
+			let taskCancelBtn = get('cancelNewTask');
+			if (e.target == projectModal || e.target == projectCancelBtn) {
+				projectModal.style.display = 'none';
+				newProjectBtn.style.display = 'block';
+			}
+			if (e.target == taskModal || e.target == taskCancelBtn) {
+				taskModal.style.display = 'none';
 				newProjectBtn.style.display = 'block';
 			}
 		};
+
+		//	DISPLAY TASK FORM
+
+		const displayTaskPopup = (e) => {
+			const taskFormPopup = get('newTaskPopup');
+			let form = get('newTaskForm');
+			let formTitle = form.firstChild.nextSibling;
+			taskFormPopup.style.display = 'flex';
+			newProjectBtn.style.display = 'none';
+			formTitle.id = e.target.parentNode.parentNode.id;
+		};
+
+		// ADD NEW PROJECT
 
 		const addNewProject = get('addNewProject');
 		addNewProject.addEventListener('click', () => {
@@ -363,15 +487,38 @@ const DOM = (() => {
 				get('projectDescInput').value
 			);
 			projects.renderProjects();
-				console.log(storage.projects);
-			
+			console.log(storage.projects);
+
 			let modal = get('newProjectPopup');
 			modal.style.display = 'none';
-				newProjectBtn.style.display = 'block';
-				get('projectTitleInput').value = '';
-				get('projectDescInput').value = '';
-				
+			newProjectBtn.style.display = 'block';
+			get('projectTitleInput').value = '';
+			get('projectDescInput').value = '';
 		});
+
+		// HIGHLIGHT INPUT PRIORITIES
+
+		const priorityCircles = getAll('.formCircles');
+		for (let i = 0; i < priorityCircles.length; i++) {
+			priorityCircles[i].addEventListener('click', (e) => {
+				resetBorders();
+				e.target.style.border = '2px solid black';
+			});
+		}
+
+		function resetBorders() {
+			for (let i = 0; i < priorityCircles.length; i++) {
+				priorityCircles[i].style.border = '0px solid black';
+			}
+		}
+
+		// POPULATE DATE
+
+		const populateDate = () => {
+			let dateInput = get('dueDateInput');
+			dateInput.value = dateTime.current.day;
+		};
+		return { displayTaskPopup, resetBorders, populateDate };
 	})();
 
 	return { nav, overview, calendar, projects };
