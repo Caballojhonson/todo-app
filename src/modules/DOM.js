@@ -13,6 +13,7 @@ import { dateTime } from './dateTime';
 import { logic } from './logic';
 import { storage } from './storage';
 import { createProject, createTask } from './objects';
+import { add } from 'date-fns';
 
 function getAll(selector) {
 	return document.querySelectorAll(selector);
@@ -339,27 +340,29 @@ const DOM = (() => {
 					eventHandling.populateDate();
 				});
 
+				editBtn.addEventListener('click', (e) => {
+					let project = storage.projects[e.target.parentNode.parentNode.id];
+					edit(project);
+				});
+
 				//	TASKCARD SECTION
 
 				const cardsContainer = createDiv('projectTaskContainer', card);
 				for (let c = 0; c < storage.projects[i].tasks.length; c++) {
 					const taskCard = createDiv('projectTaskCard', cardsContainer);
-					const completionSymbol = createDiv('completionSymbol', taskCard)
-					 
 
 					if (storage.projects[i].tasks[c].complete) {
 						console.log(storage.projects[i].tasks[c].complete);
-						taskCardTitle.style.textDecoration = 'line-through'
+						taskCardTitle.style.textDecoration = 'line-through';
 						let checkLogo = new Image();
 						checkLogo.src = checkIcon;
-						checkLogo.classList.add('checkLogo')
-						taskCard.appendChild(checkLogo)
-					}
-					else if (storage.projects[i].tasks[c].complete === false) {
+						checkLogo.classList.add('checkLogo');
+						taskCard.appendChild(checkLogo);
+					} else if (storage.projects[i].tasks[c].complete === false) {
 						let crossLogo = new Image();
 						crossLogo.src = cancelIcon;
-						crossLogo.classList.add('completeLogo')
-						taskCard.appendChild(crossLogo)
+						crossLogo.classList.add('completeLogo');
+						taskCard.appendChild(crossLogo);
 					}
 
 					const taskCardTitle = createText(
@@ -374,6 +377,66 @@ const DOM = (() => {
 
 		return { renderProjects };
 	})();
+
+	// EDIT
+
+	const edit = (project) => {
+		const addNewProjectIcon = get('newProjectBtn');
+		const formPopup = get('newProjectPopup');
+		const formTitle = get('newProjectTitle');
+		const nameInput = get('projectTitleInput');
+		const descriptionInput = get('projectDescInput');
+		const btnsContainer = get('btnsContainer');
+		const addProjectBtn = get('addNewProject');
+
+		const editProject = () => {
+			project.name = nameInput.value;
+			project.description = descriptionInput.value;
+			storage.localStore();
+		};
+
+		const displayEditForm = () => {
+			formTitle.textContent = `Edit project`;
+
+			if (document.getElementById('formEditBtn') === null) {
+				const formEditBtn = createDiv(`addBtn`, btnsContainer);
+				formEditBtn.classList.add('formBtn');
+				formEditBtn.id = 'formEditBtn';
+				formEditBtn.textContent = 'EDIT';
+			} else {
+				document.getElementById('formEditBtn').style.display = 'block';
+			}
+
+			addProjectBtn.style.display = 'none';
+			formPopup.style.display = 'flex';
+			addNewProjectIcon.style.display = 'none';
+		};
+
+		const resetForm = () => {
+			formTitle.textContent = 'New project';
+			addProjectBtn.style.display = 'block';
+			document.getElementById('formEditBtn').style.display = 'none';
+			nameInput.value = '';
+			descriptionInput.value = '';
+			addNewProjectIcon.style.display = 'block';
+			formPopup.style.display = 'none';
+		};
+
+		displayEditForm();
+
+		document.getElementById('formEditBtn').addEventListener('click', finalFunction)
+			
+
+		function finalFunction() {
+			editProject();
+			storage.localStore();
+			resetForm();
+			projects.renderProjects();
+			document.getElementById('formEditBtn').removeEventListener('click', finalFunction);
+		}
+
+		
+	};
 
 	//	TASKS
 
@@ -551,6 +614,7 @@ const DOM = (() => {
 			let dateInput = get('dueDateInput');
 			dateInput.value = dateTime.current.day;
 		};
+
 		return { displayTaskPopup, resetBorders, populateDate };
 	})();
 

@@ -146,7 +146,7 @@ h4 {
 .descriptionInput {
 	height: 6rem;
 }
-.btnsContainer {
+#btnsContainer {
 	height: 35%;
 	width: 100%;
 }
